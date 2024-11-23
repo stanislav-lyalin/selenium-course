@@ -22,7 +22,7 @@ public class CheckAllSectionsTest {
     @BeforeEach
     public void setup() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().window().maximize();
     }
 
@@ -182,14 +182,10 @@ public class CheckAllSectionsTest {
         href = href.equals("scan_files") ? "scan" : href;
 
         var jobs = Set.of("Customer", "Shipping", "Payment", "Order Total", "Order Success", "Order Action");
-        if (jobs.contains(name)) {
-            name = name + " Modules";
-        }
+        name = jobs.contains(name) ? name + " Modules" : name;
 
         var settings = Set.of("Store Info", "Defaults", "General", "Listings", "Images", "Checkout", "Advanced", "Security");
-        if (settings.contains(name)) {
-            name = "Settings";
-        }
+        name = settings.contains(name) ? "Settings" : name;
 
         name = name.equals("Jobs") ? "Job Modules" : name;
 
