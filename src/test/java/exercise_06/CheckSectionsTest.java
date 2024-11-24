@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CheckAllSectionsTest {
+public class CheckSectionsTest {
 
     private static final String URL = "http://localhost/litecart/admin/";
     private static final String TITLE = "My Store";
@@ -24,6 +24,12 @@ public class CheckAllSectionsTest {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         driver.manage().window().maximize();
+    }
+
+    @AfterEach
+    public void teardown() {
+        driver.quit();
+        driver = null;
     }
 
     @Test
@@ -166,12 +172,6 @@ public class CheckAllSectionsTest {
         checkSection("vQmods");
     }
 
-    @AfterEach
-    public void teardown() {
-        driver.quit();
-        driver = null;
-    }
-
     private void checkSection(String name) {
         String href = name.replaceAll(" ", "_").toLowerCase();
 
@@ -193,8 +193,7 @@ public class CheckAllSectionsTest {
 
         name = name.equals("Scan Files") ? "Scan Files For Translations" : name;
 
-        var element = driver.findElement(By.cssSelector("a[href$='%s']".formatted(href)));
-        element.click();
+        driver.findElement(By.cssSelector("a[href$='%s']".formatted(href))).click();
         assertEquals(name, driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText());
     }
 }
