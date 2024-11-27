@@ -78,6 +78,7 @@ public class CheckCountriesTest {
                     .filter(Objects::nonNull)
                     .filter(value -> !value.isEmpty())
                     .toList();
+
             List<String> expectedList = new ArrayList<>(actualList);
             Collections.sort(expectedList);
             assertEquals(expectedList, actualList);

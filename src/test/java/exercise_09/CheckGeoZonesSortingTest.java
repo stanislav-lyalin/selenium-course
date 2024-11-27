@@ -64,6 +64,7 @@ public class CheckGeoZonesSortingTest {
                     .filter(Objects::nonNull)
                     .filter(text -> !text.isEmpty())
                     .toList();
+
             List<String> expectedList = new ArrayList<>(actualList);
             Collections.sort(expectedList);
             assertEquals(expectedList, actualList);
