@@ -73,9 +73,9 @@ public class CheckSectionsTest {
                     .filter(href -> !href.isEmpty())
                     .forEach(sectionLinks::add);
             // cycle for each section link
-            for (String allLink : sectionLinks) {
+            for (String sectionLink : sectionLinks) {
                 // click on section link
-                driver.get(allLink);
+                driver.get(sectionLink);
                 // assert title
                 Assertions.assertFalse(driver.findElement(By.xpath("//td[@id='content']/h1")).getText().isEmpty());
             }
