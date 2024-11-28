@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
@@ -72,11 +73,10 @@ public class CheckCountriesTest {
 
         for (String link : links) {
             driver.get(link);
-            List<String> actualList = driver.findElements(By.xpath("//td[3]/input"))
+            List<String> actualList = driver.findElements(By.xpath("//table[2]/tbody/tr[*]/td[3]"))
                     .stream()
-                    .map(zone -> zone.getAttribute("value"))
-                    .filter(Objects::nonNull)
-                    .filter(value -> !value.isEmpty())
+                    .map(WebElement::getText)
+                    .filter(text -> !text.isEmpty())
                     .toList();
 
             List<String> expectedList = new ArrayList<>(actualList);

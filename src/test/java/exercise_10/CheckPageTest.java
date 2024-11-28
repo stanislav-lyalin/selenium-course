@@ -61,8 +61,8 @@ public class CheckPageTest {
         String productPageTitle = driver.findElement(By.xpath("//a[@data-fancybox-group='product']/img")).getAttribute("title");
 
         // price value
-        String productPageRegularPrice = driver.findElement(By.xpath("//div[@class='price-wrapper']/s")).getText();
-        String productPageCampaignPrice = driver.findElement(By.xpath("//div[@class='price-wrapper']/strong")).getText();
+        String productPageRegularPriceValue = driver.findElement(By.xpath("//div[@class='price-wrapper']/s")).getText();
+        String productPageCampaignPriceValue = driver.findElement(By.xpath("//div[@class='price-wrapper']/strong")).getText();
 
         // color
         String productPageRegularPriceColor = driver.findElement(By.xpath("//div[@class='price-wrapper']/s")).getCssValue("color");
@@ -78,8 +78,8 @@ public class CheckPageTest {
         assertEquals(mainMenuTitle, productPageTitle);
 
         // price value assertion
-        assertEquals(mainMenuRegularPriceValue, productPageRegularPrice);
-        assertEquals(mainMenuCampaignPriceValue, productPageCampaignPrice);
+        assertEquals(mainMenuRegularPriceValue, productPageRegularPriceValue);
+        assertEquals(mainMenuCampaignPriceValue, productPageCampaignPriceValue);
 
         // color assertion
         assertPriceColor("regular", mainMenuRegularPriceColor);
@@ -88,8 +88,8 @@ public class CheckPageTest {
         assertPriceColor("campaign", productPageCampaignPricezColor);
 
         // font assertion
-        Assertions.assertTrue(Integer.parseInt(mainMenuRegularPriceFontWeight) < Integer.parseInt(mainMenuCampaignPriceColorFontWeight));
-        Assertions.assertTrue(Integer.parseInt(productPageRegularPriceFontWeight) < Integer.parseInt(productPageCampaignPriceColorFontWeight));
+        Assertions.assertTrue(Double.parseDouble(mainMenuRegularPriceFontWeight) < Double.parseDouble(mainMenuCampaignPriceColorFontWeight));
+        Assertions.assertTrue(Double.parseDouble(productPageRegularPriceFontWeight) < Double.parseDouble(productPageCampaignPriceColorFontWeight));
     }
 
     private void assertPriceColor(String priceType, String color) {

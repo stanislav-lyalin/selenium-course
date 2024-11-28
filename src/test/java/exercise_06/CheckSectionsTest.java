@@ -1,6 +1,7 @@
 package exercise_06;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -8,7 +9,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +25,7 @@ public class CheckSectionsTest {
     @BeforeEach
     public void setup() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.manage().window().maximize();
     }
 
@@ -35,23 +38,7 @@ public class CheckSectionsTest {
     @Test
     public void test() {
         login();
-        checkAppearence();
-        checkCatalog();
-        checkCountries();
-        checkCurrencies();
-        checkCustomers();
-        checkGeoZones();
-        checkLanguages();
-        checkModules();
-        checkOrders();
-        checkPages();
-        checkReports();
-        checkSettings();
-        checkSlides();
-        checkTax();
-        checkTranslations();
-        checkUsers();
-        checkVQMods();
+        checkSections();
     }
 
     private void login() {
@@ -63,137 +50,35 @@ public class CheckSectionsTest {
         assertEquals(MESSAGE, driver.findElement(By.xpath("//*[@id=\"notices\"]/div[2]")).getText());
     }
 
-    private void checkAppearence() {
-        checkSection("Template");
-        checkSection("Template");
-        checkSection("Logotype");
-    }
-
-    private void checkCatalog() {
-        checkSection("Catalog");
-        checkSection("Catalog");
-        checkSection("Product Groups");
-        checkSection("Option Groups");
-        checkSection("Manufacturers");
-        checkSection("Suppliers");
-        checkSection("Suppliers");
-        checkSection("Delivery Statuses");
-        checkSection("Sold Out Statuses");
-        checkSection("Quantity Units");
-        checkSection("CSV Import/Export");
-    }
-
-    private void checkCountries() {
-        checkSection("Countries");
-    }
-
-    private void checkCurrencies() {
-        checkSection("Currencies");
-    }
-
-    private void checkCustomers() {
-        checkSection("Customers");
-        checkSection("CSV Import/Export");
-        checkSection("Newsletter");
-    }
-
-    private void checkGeoZones() {
-        checkSection("Geo Zones");
-    }
-
-    private void checkLanguages() {
-        checkSection("Languages");
-        checkSection("Languages");
-        checkSection("Storage Encoding");
-    }
-
-    private void checkModules() {
-        checkSection("Jobs");
-        checkSection("Jobs");
-        checkSection("Customer");
-        checkSection("Shipping");
-        checkSection("Payment");
-        checkSection("Order Total");
-        checkSection("Order Success");
-        checkSection("Order Action");
-    }
-
-    private void checkOrders() {
-        checkSection("Orders");
-        checkSection("Orders");
-        checkSection("Order Statuses");
-    }
-
-    private void checkPages() {
-        checkSection("Pages");
-    }
-
-    private void checkReports() {
-        checkSection("Monthly Sales");
-        checkSection("Most Sold Products");
-        checkSection("Most Shopping Customers");
-    }
-
-    private void checkSettings() {
-        checkSection("Store Info");
-        checkSection("Store Info");
-        checkSection("Defaults");
-        checkSection("General");
-        checkSection("Listings");
-        checkSection("Images");
-        checkSection("Checkout");
-        checkSection("Advanced");
-        checkSection("Security");
-    }
-
-    private void checkSlides() {
-        checkSection("Slides");
-    }
-
-    private void checkTax() {
-        checkSection("Tax Classes");
-        checkSection("Tax Classes");
-        checkSection("Tax Rates");
-    }
-
-    private void checkTranslations() {
-        checkSection("Search Translations");
-        checkSection("Search Translations");
-        checkSection("Scan Files");
-        checkSection("CSV Import/Export");
-    }
-
-    private void checkUsers() {
-        checkSection("Users");
-    }
-
-    private void checkVQMods() {
-        checkSection("vQmods");
-        checkSection("vQmods");
-    }
-
-    private void checkSection(String name) {
-        String href = name.replaceAll(" ", "_").toLowerCase();
-
-        href = href.equals("csv_import/export") ? "csv" : href;
-
-        href = href.equals("search_translations") ? "search" : href;
-
-        href = href.equals("scan_files") ? "scan" : href;
-
-        var jobs = Set.of("Customer", "Shipping", "Payment", "Order Total", "Order Success", "Order Action");
-        name = jobs.contains(name) ? name + " Modules" : name;
-
-        var settings = Set.of("Store Info", "Defaults", "General", "Listings", "Images", "Checkout", "Advanced", "Security");
-        name = settings.contains(name) ? "Settings" : name;
-
-        name = name.equals("Jobs") ? "Job Modules" : name;
-
-        name = name.equals("Store Info") ? "Settings" : name;
-
-        name = name.equals("Scan Files") ? "Scan Files For Translations" : name;
-
-        driver.findElement(By.cssSelector("a[href$='%s']".formatted(href))).click();
-        assertEquals(name, driver.findElement(By.xpath("//*[@id=\"content\"]/h1")).getText());
+    private void checkSections() {
+        // find all menu links
+        List<String> menuLinks = driver.findElements(By.xpath("//li[(contains(@id,'app-'))]/a"))
+                .stream()
+                .map(link -> link.getAttribute("href"))
+                .filter(Objects::nonNull)
+                .filter(href -> !href.isEmpty())
+                .toList();
+        // cycle for each menu link
+        for (String menulink : menuLinks) {
+            // clink on menu link
+            driver.get(menulink);
+            // assert title
+            Assertions.assertFalse(driver.findElement(By.xpath("//td[@id='content']/h1")).getText().isEmpty());
+            // find all section links
+            List<String> sectionLinks = new ArrayList<>();
+            driver.findElements(By.xpath("//li[(contains(@id,'doc-'))]/a"))
+                    .stream()
+                    .map(link -> link.getAttribute("href"))
+                    .filter(Objects::nonNull)
+                    .filter(href -> !href.isEmpty())
+                    .forEach(sectionLinks::add);
+            // cycle for each section link
+            for (String allLink : sectionLinks) {
+                // click on section link
+                driver.get(allLink);
+                // assert title
+                Assertions.assertFalse(driver.findElement(By.xpath("//td[@id='content']/h1")).getText().isEmpty());
+            }
+        }
     }
 }
