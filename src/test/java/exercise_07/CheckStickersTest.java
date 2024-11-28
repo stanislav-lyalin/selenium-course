@@ -1,18 +1,14 @@
 package exercise_07;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CheckStickersTest {
 
@@ -35,10 +31,7 @@ public class CheckStickersTest {
     @Test
     public void checkStickers() {
         driver.get(URL);
-        List<WebElement> ducks = driver.findElements(By.cssSelector("a[href*='%s']".formatted("-duck-p-")));
-        for (WebElement duck : ducks) {
-            List<WebElement> stickers = new ArrayList<>(duck.findElements(By.cssSelector("[class^='sticker']")));
-            assertEquals(1, stickers.size());
-        }
+        driver.findElements(By.xpath("//li[contains(@class,'product')]"))
+                .forEach(duck -> Assertions.assertEquals(1, duck.findElements(By.cssSelector(".sticker")).size()));
     }
 }
