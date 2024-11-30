@@ -81,8 +81,6 @@ public class RegistrationTest {
         driver.findElement(By.xpath("//select[@name='zone_code']/option[%s]".formatted(randomZoneNumber))).click();
         // logout
         driver.findElement(By.name("create_account")).click();
-        System.out.println("a");
-
     }
 
     private void logout() {
