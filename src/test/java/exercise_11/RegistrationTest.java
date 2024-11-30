@@ -74,7 +74,7 @@ public class RegistrationTest {
         driver.findElement(By.xpath("//select[@name='country_code']/option[contains(text(), 'United States')]")).click();
         // close drop-down list
         driver.findElement(By.xpath("//span[@class='select2-selection__arrow']")).click();
-        // find size of zone list
+        // get size of zone list
         int size = driver.findElements(By.xpath("//select[@name='zone_code']/*")).size();
         // choose random zone
         short randomZoneNumber = (short) (Math.random() * (size - 1) + 1);
