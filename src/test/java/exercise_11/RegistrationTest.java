@@ -84,7 +84,7 @@ public class RegistrationTest {
         // choose random zone
         short randomZoneNumber = (short) (Math.random() * (size - 1) + 1);
         driver.findElement(By.xpath("//select[@name='zone_code']/option[%s]".formatted(randomZoneNumber))).click();
-        // logout
+        // click on create account button
         driver.findElement(By.name("create_account")).click();
     }
 

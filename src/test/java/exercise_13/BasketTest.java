@@ -47,7 +47,7 @@ public class BasketTest {
                 Assertions.assertEquals(i, quantity);
                 // click on product
                 driver.findElement(By.xpath("//ul[@class='listing-wrapper products']/li[1]/a")).click();
-                // check for mandatory option
+                // check for mandatory size option
                 if (!driver.findElements(By.name("options[Size]")).isEmpty()) {
                     driver.findElement(By.name("options[Size]")).click();
                     driver.findElement(By.xpath("//option[@value='Small']")).click();
@@ -66,7 +66,7 @@ public class BasketTest {
         // cycle to remove items
         while (getSumQuantity() != 0) {
             try {
-                // clock on first item
+                // click on first item
                 driver.findElement(By.xpath("//ul[@class='shortcuts']/li[1]")).click();
                 // wait for remove button to be clickable
                 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@name='remove_cart_item'][1]")));
