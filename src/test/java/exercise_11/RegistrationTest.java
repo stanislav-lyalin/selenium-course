@@ -5,7 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
@@ -16,12 +18,14 @@ public class RegistrationTest {
     WebDriver driver;
     String email;
     String password;
+    JavascriptExecutor js;
 
     @BeforeEach
     public void setup() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.manage().window().maximize();
+        js = (JavascriptExecutor) driver;
     }
 
     @AfterEach
@@ -71,7 +75,8 @@ public class RegistrationTest {
         // open drop-down list
         driver.findElement(By.xpath("//span[@class='select2-selection__arrow']")).click();
         // select country
-        driver.findElement(By.xpath("//select[@name='country_code']/option[contains(text(), 'United States')]")).click();
+        WebElement select = driver.findElement(By.xpath("//select[@name='country_code']"));
+        js.executeScript("arguments[0].selectedIndex = 224; arguments[0].dispatchEvent(new Event('change'));", select);
         // close drop-down list
         driver.findElement(By.xpath("//span[@class='select2-selection__arrow']")).click();
         // get size of zone list
